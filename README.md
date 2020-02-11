@@ -1,6 +1,6 @@
 # Data Tidying
 ## Assignment 2
-
+$$
 \begin{enumerate}
 \item Render a box-plot with the data contained in the data1.csv file, showing also one point for each value of the data (use horizontal jitter).
 
@@ -11,3 +11,4 @@
 \item Make a multiple box-plot for each column of the file data3.csv (that is, use only one y-axis and place them in an x-axis of type d3.scaleBand()).
 
 \end{enumerate}
+$$
