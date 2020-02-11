@@ -5,7 +5,32 @@
 <title>Assignment</title>
 <script src="https://d3js.org/d3.v4.js"></script>
 <style>
+
+div {
+	width: 200px;
+}
+
 table {
+  width: 200px;
+  table-layout:fixed; 
+}
+
+thead {
+  width: 200px;
+  table-layout:fixed; 
+}
+
+tbody {
+  width: 200px;
+  table-layout:fixed; 
+}
+
+tr{
+  width: 200px;
+   table-layout:fixed; 
+}
+
+th{
   width: 200px;
 }
 
@@ -30,37 +55,34 @@ td.value {
 
 <h1>2º Assignment</h1>
 
+<h3>Render a box-plot with the data contained in the data1.csv file, showing also one point for each value of the data (use horizontal jitter).</h3>
 
 <div id="boxplot"></div>
 
+<h3>Plot automatically a data table by selecting the data from the files data1.csv, data2.csv and data3.csv (Use an html "select" tag and the onchange event).</h3>
+
 <form>
-		<label>File: <select id="filename" onchange="load_data(this.value);">
-			<option value="data/data1.csv">data1</option>
+		<label>File: <select id="filename" onchange="load_table(this.value);">
+			<option value="data/data1.csv" selected>data1</option>
 			<option value="data/data2.csv">data2</option>
 			<option value="data/data3.csv">data3</option>
 		</select></label>
 
 </form>  
-        
-
+       
 <div id="table"></div>
 
 <svg height="200" width="200"></svg>
 
+<h3>Render a bar-chart with the data contained in one column of data2.csv by allowing the user to select a column with a mouse-click of it.</h3>
+<div id='barplot'></div>
+
+<h3>Make a multiple box-plot for each column of the file data3.csv (that is, use only one y-axis and place them in an x-axis of type d3.scaleBand()).</h3>
+<div id='multibox'></div>
 
 <script>
 <!-- 
 d3.csv("data/data1.csv", function(data){
-  
-  my_csv_data = data;
-
-  d3.select("#table")
-  .append("table")
-  .selectAll("tr")
-  .data(data)
-  .enter()
-  .append("tr")
-  .html(d => "<td class='name'>"+d.name+"</td>" + "<td class='value'>"+d.value+"</td>");
   
   var dd = data.map(d => + d.value);
   boxplot(dd);
@@ -135,23 +157,59 @@ function boxplot(data) {
 	  
 }
 
-function load_data(data_name){
+function load_table(data_name){
 
-d3.csv(data_name, function(data){
-  
-  my_csv_data = data;
 
-  d3.select("#table")
-  .append("table")
-  .selectAll("tr")
-  .data(data)
-  .enter()
-  .append("tr")
-  .html(d => "<td class='name'>"+d.name+"</td>" + "<td class='value'>"+d.value+"</td>");
- 
-   
-})
+	//This might be easier by using the normal table code of the teacher and separating each case by an if 
+	//But that seems like a bad solution
+	  
+	var tabulate = function (data,columns) {
+	  var table =  d3.select("#table")
+	  table
+			.attr('width', 400)
+			.attr('height', 400)
+			
+		var thead = table.append('thead')
+		var tbody = table.append('tbody')
 
+		thead.append('tr')
+		  .selectAll('th')
+			.data(columns)
+			.enter()
+		  .append('th')
+			.text(function (d) { return d })
+
+		var rows = tbody.selectAll('tr')
+			.data(data)
+			.enter()
+		  .append('tr')
+
+		var cells = rows.selectAll('td')
+			.data(function(row) {
+				return columns.map(function (column) {
+					return { column: column, value: row[column] }
+			  })
+		  })
+		  .enter()
+		.append('td')
+		  .text(function (d) { return d.value })
+
+	  return table;
+	}
+
+	d3.csv(data_name,function (data) {
+		if (data_name === 'data/data1.csv') {
+		var columns = ['value','name']
+		}
+		if (data_name === 'data/data2.csv') {
+		var columns = ['x','y','name']
+		}
+		if (data_name === 'data/data3.csv') {
+		var columns = ['color','length','height','name']
+		}
+		
+	  tabulate(data,columns)
+	})
 }
 
 </script>
