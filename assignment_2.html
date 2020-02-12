@@ -313,10 +313,9 @@ function barchart(col_name){
 }
 
 function multiboxplot(){
-
 	// set the dimensions and margins of the graph
 	var margin = {top: 10, right: 30, bottom: 30, left: 40},
-		width = 600 - margin.left - margin.right,
+		width = 460 - margin.left - margin.right,
 		height = 400 - margin.top - margin.bottom;
 
 	// append the svg object to the body of the page
@@ -328,16 +327,9 @@ function multiboxplot(){
 		.attr("transform",
 			  "translate(" + margin.left + "," + margin.top + ")");
 
-	// Read the data and compute summary statistics for each specie
-	d3.csv("test.csv", function(data) {
-		
-	  //format = {value: data.map(d => + d.color) + data.map(d => + d.length) + data.map(d => + d.height), 
-				//name: fillArray('color',30) + fillArray('length',30) + fillArray('height',30)};
+	// Read the data and compute summary statistics for each value
+	d3.csv("data/data3formatted.csv", function(data) {
 
-	  //data = format
-	  
-	  console.log(data)
-	  
 	  // Compute quartiles, median, inter quantile range min and max --> these info are then used to draw the box.
 	  var sumstat = d3.nest() // nest function allows to group the calculation per level of a factor
 		.key(function(d) { return d.name;})
@@ -355,7 +347,7 @@ function multiboxplot(){
 	  // Show the X scale
 	  var x = d3.scaleBand()
 		.range([ 0, width ])
-		.domain(['color', 'lenght', 'height'])
+		.domain(["color", "length", "height"])
 		.paddingInner(1)
 		.paddingOuter(.5)
 	  svg.append("g")
@@ -364,7 +356,7 @@ function multiboxplot(){
 
 	  // Show the Y scale
 	  var y = d3.scaleLinear()
-		.domain([0,30])
+		.domain([-10,35])
 		.range([height, 0])
 	  svg.append("g").call(d3.axisLeft(y))
 
@@ -380,7 +372,6 @@ function multiboxplot(){
 		  .attr("y2", function(d){return(y(d.value.max))})
 		  .attr("stroke", "black")
 		  .style("width", 40)
-
 
 	  // rectangle for the main box
 	  var boxWidth = 100
@@ -424,8 +415,6 @@ function multiboxplot(){
 
 
 	})
-
-
 }
 
 function fillArray(value, len) {
