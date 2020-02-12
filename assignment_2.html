@@ -105,7 +105,7 @@ td {
 <div id='barplot'></div>
 
 <!-- <h3>Make a multiple box-plot for each column of the file data3.csv (that is, use only one y-axis and place them in an x-axis of type d3.scaleBand()).</h3> -->
-<h3>Multi boxplot of Data 3</h3>
+<h3>Multiple box plot of Data 3</h3>
 
 <div id='multibox'></div>
 
@@ -142,6 +142,7 @@ function boxplot(data) {
 	var interQuantileRange = q3 - q1
 	var min = q1 - 1.5 * interQuantileRange
 	var max = q1 + 1.5 * interQuantileRange
+	
 
 	// Show the Y scale
 	var y = d3.scaleLinear()
@@ -183,6 +184,19 @@ function boxplot(data) {
 	  .attr("y1", function(d){ return(y(d))} )
 	  .attr("y2", function(d){ return(y(d))} )
 	  .attr("stroke", "black")
+	  
+	var jitterWidth = 50
+	svg
+	  .selectAll("indPoints")
+	  .data(data)
+	  .enter()
+	  .append("circle")
+		.attr("cx", function(d){return(center - jitterWidth/2 + Math.random()*jitterWidth )})
+		.attr("cy", function(d){return(y(d))})
+		.attr("r", 4)
+		.style("fill", "white")
+		.attr("stroke", "black")
+
 	  
 }
 
