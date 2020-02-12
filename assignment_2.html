@@ -6,8 +6,24 @@
 <script src="https://d3js.org/d3.v4.js"></script>
 <style>
 
+h1 {
+	text-align: center;
+	font-family: "Courier New", Courier, monospace;	
+}
+
+form {
+	text-align: center;
+}
+
+h3 {
+	text-align: center;
+	font-family: "Courier New", Courier, monospace;
+}
+
 div {
-	width: 200px;
+	width: 250px;
+	display: block;
+	margin: auto;
 }
 
 table {
@@ -15,37 +31,11 @@ table {
   table-layout:fixed; 
 }
 
-thead {
-  width: 200px;
-  table-layout:fixed; 
-}
-
-tbody {
-  width: 200px;
-  table-layout:fixed; 
-}
-
-tr{
-  width: 200px;
-   table-layout:fixed; 
-}
-
-th{
-  width: 200px;
-}
-
 td {
  width: 50%;
  border: 1px solid blue;
  text-align: center;
-}
-
-td.name {
-  background-color: red;
-}
-
-td.value {
-  background-color: lightgreen;
+ background-color: lightgreen;
 }
 
 </style>
@@ -53,7 +43,7 @@ td.value {
 
 <body>
 
-<h1>2º Assignment</h1>
+<h1>Assignment 2</h1>
 
 <h3>Render a box-plot with the data contained in the data1.csv file, showing also one point for each value of the data (use horizontal jitter).</h3>
 
@@ -63,9 +53,9 @@ td.value {
 
 <form>
 		<label>File: <select id="filename" onchange="load_table(this.value);">
-			<option value="data/data1.csv" selected>data1</option>
-			<option value="data/data2.csv">data2</option>
-			<option value="data/data3.csv">data3</option>
+			<option value="data/data1.csv" selected>Data 1</option>
+			<option value="data/data2.csv">Data 2</option>
+			<option value="data/data3.csv">Data 3</option>
 		</select></label>
 
 </form>  
@@ -77,12 +67,13 @@ td.value {
 <h3>Render a bar-chart with the data contained in one column of data2.csv by allowing the user to select a column with a mouse-click of it.</h3>
 
 <form>
-		<label>File: <select id="colname" onchange="barchart(this.value);">
-			<option value="x" selected>x</option>
-			<option value="y">y</option>
-		</select></label>
-
-</form>  
+	<span>
+		<label><input type="radio" name="chart_type" value="x"
+				checked onchange="barchart(this.value);" />X</label>
+		<label><input type="radio" name="chart_type" value="y" onchange="barchart(this.value);" />Y</label>
+	</span>
+ </form>
+ 
 <div id='barplot'></div>
 
 <h3>Make a multiple box-plot for each column of the file data3.csv (that is, use only one y-axis and place them in an x-axis of type d3.scaleBand()).</h3>
