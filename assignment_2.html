@@ -26,7 +26,7 @@ div.assignment {
 }
 
 div {
-	width: 250px;
+	width: 300px;
 	display: block;
 	margin: auto;
 }
@@ -38,9 +38,7 @@ table {
 
 td {
  width: 50%;
- border: 1px solid blue;
  text-align: center;
- background-color: lightgreen;
 }
 
 </style>
@@ -92,7 +90,7 @@ td {
 <!-- <svg height="200" width="200"></svg> -->
 
 <!-- <h3>Render a bar-chart with the data contained in one column of data2.csv by allowing the user to select a column with a mouse-click of it.</h3> -->
-<h3>Bar plot of Data 2</h3>
+<h3>Bar plot: Data 2</h3>
 
 <form>
 	<span>
@@ -117,6 +115,12 @@ d3.csv("data/data1.csv", function(data){
   boxplot(dd);
    
 })
+
+load_table('data/data1.csv')
+
+barchart('x')
+
+multiboxplot()
 
 
 function boxplot(data) {
@@ -207,7 +211,7 @@ function load_table(data_name){
 	//But that seems like a bad solution
 	  
 	var tabulate = function (data,columns) {
-	  var table =  d3.select("#table")
+	  var table =  d3.select("#table").html("")
 	  table
 			.attr('width', 400)
 			.attr('height', 400)
@@ -263,7 +267,7 @@ function barchart(col_name){
 		height = 400 - margin.top - margin.bottom;
 
 	// append the svg object to the body of the page
-	var svg = d3.select("#barplot")
+	var svg = d3.select("#barplot").html("")
 	  .append("svg")
 		.attr("width", width + margin.left + margin.right)
 		.attr("height", height + margin.top + margin.bottom)
@@ -303,7 +307,7 @@ function barchart(col_name){
 		.attr("width", x.bandwidth())
 		.attr("height", function(d) { return height - y((col_name === 'x') ? d.x : d.y); })
 		.attr("fill", "#69b3a2")
-
+	 
 })
 
 }
@@ -344,7 +348,7 @@ function multiboxplot(){
 	  // Show the X scale
 	  var x = d3.scaleBand()
 		.range([ 0, width ])
-		.domain(["setosa", "versicolor", "virginica"])
+		.domain(['color', 'lenght', 'height'])
 		.paddingInner(1)
 		.paddingOuter(.5)
 	  svg.append("g")
@@ -415,8 +419,6 @@ function multiboxplot(){
 
 
 }
-
-multiboxplot()
 
 
 </script>
