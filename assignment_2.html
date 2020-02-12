@@ -20,6 +20,11 @@ h3 {
 	font-family: "Courier New", Courier, monospace;
 }
 
+div.assignment {
+	font-family: "Courier New", Courier, monospace;
+	width:600px;
+}
+
 div {
 	width: 250px;
 	display: block;
@@ -45,12 +50,34 @@ td {
 
 <h1>Assignment 2</h1>
 
-<h3>Render a box-plot with the data contained in the data1.csv file, showing also one point for each value of the data (use horizontal jitter).</h3>
+<div class="assignment">
+	<b style="color:red;">Assignment:</b>
+	<br>Create a GitHub repository with web pages addressing the
+	following problem:&nbsp;
+	<ul>
+		<li>Render a <b>box-plot</b> with the data contained in the <em>data1.csv</em>
+			file, showing also one point for each value of the data (use
+			horizontal jitter).</li>
+		<li>Plot automatically a data <b>table</b> by selecting the data
+			from the files <em>data1.csv</em>, <em>data2.csv</em> and
+			<em>data3.csv</em> (Use an html <code>&lt;select&gt;</code>
+			tag).</li>
+		<li>Render a <b>bar-chart</b> with the data contained in one
+			column of <em>data2.csv</em> by allowing the user to select
+			a column with a mouse-click of it.</li>
+		<li>Make a <b>multiple box-plot</b> for each column of the file
+			<em>data3.csv</em> (that is use only one y-axis and place
+			them in an x-axis of type <code>d3.scaleBand()</code>).</li>
+	</ul>
+</div>
+
+<!-- <h3>Render a box-plot with the data contained in the data1.csv file, showing also one point for each value of the data (use horizontal jitter).</h3> -->
+<h3>Box plot: Data 1</h3>
 
 <div id="boxplot"></div>
 
-<h3>Plot automatically a data table by selecting the data from the files data1.csv, data2.csv and data3.csv (Use an html "select" tag and the onchange event).</h3>
-
+<!-- <h3>Plot automatically a data table by selecting the data from the files data1.csv, data2.csv and data3.csv (Use an html "select" tag and the onchange event).</h3> -->
+<h3>Data table</h3>
 <form>
 		<label>File: <select id="filename" onchange="load_table(this.value);">
 			<option value="data/data1.csv" selected>Data 1</option>
@@ -64,7 +91,8 @@ td {
 
 <!-- <svg height="200" width="200"></svg> -->
 
-<h3>Render a bar-chart with the data contained in one column of data2.csv by allowing the user to select a column with a mouse-click of it.</h3>
+<!-- <h3>Render a bar-chart with the data contained in one column of data2.csv by allowing the user to select a column with a mouse-click of it.</h3> -->
+<h3>Bar plot of Data 2</h3>
 
 <form>
 	<span>
@@ -76,7 +104,9 @@ td {
  
 <div id='barplot'></div>
 
-<h3>Make a multiple box-plot for each column of the file data3.csv (that is, use only one y-axis and place them in an x-axis of type d3.scaleBand()).</h3>
+<!-- <h3>Make a multiple box-plot for each column of the file data3.csv (that is, use only one y-axis and place them in an x-axis of type d3.scaleBand()).</h3> -->
+<h3>Multi boxplot of Data 3</h3>
+
 <div id='multibox'></div>
 
 <script>
