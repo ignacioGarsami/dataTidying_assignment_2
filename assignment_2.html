@@ -6,8 +6,29 @@
 <script src="https://d3js.org/d3.v4.js"></script>
 <style>
 
+h1 {
+	text-align: center;
+	font-family: "Courier New", Courier, monospace;	
+}
+
+form {
+	text-align: center;
+}
+
+h3 {
+	text-align: center;
+	font-family: "Courier New", Courier, monospace;
+}
+
+div.assignment {
+	font-family: "Courier New", Courier, monospace;
+	width:600px;
+}
+
 div {
-	width: 200px;
+	width: 300px;
+	display: block;
+	margin: auto;
 }
 
 table {
@@ -15,37 +36,9 @@ table {
   table-layout:fixed; 
 }
 
-thead {
-  width: 200px;
-  table-layout:fixed; 
-}
-
-tbody {
-  width: 200px;
-  table-layout:fixed; 
-}
-
-tr{
-  width: 200px;
-   table-layout:fixed; 
-}
-
-th{
-  width: 200px;
-}
-
 td {
  width: 50%;
- border: 1px solid blue;
  text-align: center;
-}
-
-td.name {
-  background-color: red;
-}
-
-td.value {
-  background-color: lightgreen;
 }
 
 </style>
@@ -53,19 +46,41 @@ td.value {
 
 <body>
 
-<h1>2º Assignment</h1>
+<h1>Assignment 2</h1>
 
-<h3>Render a box-plot with the data contained in the data1.csv file, showing also one point for each value of the data (use horizontal jitter).</h3>
+<div class="assignment">
+	<b style="color:red;">Assignment:</b>
+	<br>Create a GitHub repository with web pages addressing the
+	following problem:&nbsp;
+	<ul>
+		<li>Render a <b>box-plot</b> with the data contained in the <em>data1.csv</em>
+			file, showing also one point for each value of the data (use
+			horizontal jitter).</li>
+		<li>Plot automatically a data <b>table</b> by selecting the data
+			from the files <em>data1.csv</em>, <em>data2.csv</em> and
+			<em>data3.csv</em> (Use an html <code>&lt;select&gt;</code>
+			tag).</li>
+		<li>Render a <b>bar-chart</b> with the data contained in one
+			column of <em>data2.csv</em> by allowing the user to select
+			a column with a mouse-click of it.</li>
+		<li>Make a <b>multiple box-plot</b> for each column of the file
+			<em>data3.csv</em> (that is use only one y-axis and place
+			them in an x-axis of type <code>d3.scaleBand()</code>).</li>
+	</ul>
+</div>
+
+<!-- <h3>Render a box-plot with the data contained in the data1.csv file, showing also one point for each value of the data (use horizontal jitter).</h3> -->
+<h3>Box plot: Data 1</h3>
 
 <div id="boxplot"></div>
 
-<h3>Plot automatically a data table by selecting the data from the files data1.csv, data2.csv and data3.csv (Use an html "select" tag and the onchange event).</h3>
-
+<!-- <h3>Plot automatically a data table by selecting the data from the files data1.csv, data2.csv and data3.csv (Use an html "select" tag and the onchange event).</h3> -->
+<h3>Data table</h3>
 <form>
 		<label>File: <select id="filename" onchange="load_table(this.value);">
-			<option value="data/data1.csv" selected>data1</option>
-			<option value="data/data2.csv">data2</option>
-			<option value="data/data3.csv">data3</option>
+			<option value="data/data1.csv" selected>Data 1</option>
+			<option value="data/data2.csv">Data 2</option>
+			<option value="data/data3.csv">Data 3</option>
 		</select></label>
 
 </form>  
@@ -74,18 +89,22 @@ td.value {
 
 <!-- <svg height="200" width="200"></svg> -->
 
-<h3>Render a bar-chart with the data contained in one column of data2.csv by allowing the user to select a column with a mouse-click of it.</h3>
+<!-- <h3>Render a bar-chart with the data contained in one column of data2.csv by allowing the user to select a column with a mouse-click of it.</h3> -->
+<h3>Bar plot: Data 2</h3>
 
 <form>
-		<label>File: <select id="colname" onchange="barchart(this.value);">
-			<option value="x" selected>x</option>
-			<option value="y">y</option>
-		</select></label>
-
-</form>  
+	<span>
+		<label><input type="radio" name="chart_type" value="x"
+				checked onchange="barchart(this.value);" />X</label>
+		<label><input type="radio" name="chart_type" value="y" onchange="barchart(this.value);" />Y</label>
+	</span>
+ </form>
+ 
 <div id='barplot'></div>
 
-<h3>Make a multiple box-plot for each column of the file data3.csv (that is, use only one y-axis and place them in an x-axis of type d3.scaleBand()).</h3>
+<!-- <h3>Make a multiple box-plot for each column of the file data3.csv (that is, use only one y-axis and place them in an x-axis of type d3.scaleBand()).</h3> -->
+<h3>Multiple box plot of Data 3</h3>
+
 <div id='multibox'></div>
 
 <script>
@@ -96,7 +115,13 @@ d3.csv("data/data1.csv", function(data){
   boxplot(dd);
    
 })
- -->
+
+load_table('data/data1.csv')
+
+barchart('x')
+
+multiboxplot()
+
 
 function boxplot(data) {
 	// set the dimensions and margins of the graph
@@ -121,6 +146,7 @@ function boxplot(data) {
 	var interQuantileRange = q3 - q1
 	var min = q1 - 1.5 * interQuantileRange
 	var max = q1 + 1.5 * interQuantileRange
+	
 
 	// Show the Y scale
 	var y = d3.scaleLinear()
@@ -163,6 +189,19 @@ function boxplot(data) {
 	  .attr("y2", function(d){ return(y(d))} )
 	  .attr("stroke", "black")
 	  
+	var jitterWidth = 50
+	svg
+	  .selectAll("indPoints")
+	  .data(data)
+	  .enter()
+	  .append("circle")
+		.attr("cx", function(d){return(center - jitterWidth/2 + Math.random()*jitterWidth )})
+		.attr("cy", function(d){return(y(d))})
+		.attr("r", 4)
+		.style("fill", "white")
+		.attr("stroke", "black")
+
+	  
 }
 
 function load_table(data_name){
@@ -172,7 +211,7 @@ function load_table(data_name){
 	//But that seems like a bad solution
 	  
 	var tabulate = function (data,columns) {
-	  var table =  d3.select("#table")
+	  var table =  d3.select("#table").html("")
 	  table
 			.attr('width', 400)
 			.attr('height', 400)
@@ -228,7 +267,7 @@ function barchart(col_name){
 		height = 400 - margin.top - margin.bottom;
 
 	// append the svg object to the body of the page
-	var svg = d3.select("#barplot")
+	var svg = d3.select("#barplot").html("")
 	  .append("svg")
 		.attr("width", width + margin.left + margin.right)
 		.attr("height", height + margin.top + margin.bottom)
@@ -268,10 +307,119 @@ function barchart(col_name){
 		.attr("width", x.bandwidth())
 		.attr("height", function(d) { return height - y((col_name === 'x') ? d.x : d.y); })
 		.attr("fill", "#69b3a2")
-
+	 
 })
 
 }
+
+function multiboxplot(){
+
+	// set the dimensions and margins of the graph
+	var margin = {top: 10, right: 30, bottom: 30, left: 40},
+		width = 460 - margin.left - margin.right,
+		height = 400 - margin.top - margin.bottom;
+
+	// append the svg object to the body of the page
+	var svg = d3.select("#multibox")
+	  .append("svg")
+		.attr("width", width + margin.left + margin.right)
+		.attr("height", height + margin.top + margin.bottom)
+	  .append("g")
+		.attr("transform",
+			  "translate(" + margin.left + "," + margin.top + ")");
+
+	// Read the data and compute summary statistics for each specie
+	d3.csv("data/data3.csv", function(data) {
+
+	  // Compute quartiles, median, inter quantile range min and max --> these info are then used to draw the box.
+	  var sumstat = d3.nest() // nest function allows to group the calculation per level of a factor
+		.key(function(d) { return d.color;})
+		.rollup(function(d) {
+		  q1 = d3.quantile(d.map(function(g) { return g.color;}).sort(d3.ascending),.25)
+		  median = d3.quantile(d.map(function(g) { return g.color;}).sort(d3.ascending),.5)
+		  q3 = d3.quantile(d.map(function(g) { return g.color;}).sort(d3.ascending),.75)
+		  interQuantileRange = q3 - q1
+		  min = q1 - 1.5 * interQuantileRange
+		  max = q3 + 1.5 * interQuantileRange
+		  return({q1: q1, median: median, q3: q3, interQuantileRange: interQuantileRange, min: min, max: max})
+		})
+		.entries(data)
+
+	  // Show the X scale
+	  var x = d3.scaleBand()
+		.range([ 0, width ])
+		.domain(['color', 'lenght', 'height'])
+		.paddingInner(1)
+		.paddingOuter(.5)
+	  svg.append("g")
+		.attr("transform", "translate(0," + height + ")")
+		.call(d3.axisBottom(x))
+
+	  // Show the Y scale
+	  var y = d3.scaleLinear()
+		.domain([0,30])
+		.range([height, 0])
+	  svg.append("g").call(d3.axisLeft(y))
+
+	  // Show the main vertical line
+	  svg
+		.selectAll("vertLines")
+		.data(sumstat)
+		.enter()
+		.append("line")
+		  .attr("x1", function(d){return(x(d.key))})
+		  .attr("x2", function(d){return(x(d.key))})
+		  .attr("y1", function(d){return(y(d.value.min))})
+		  .attr("y2", function(d){return(y(d.value.max))})
+		  .attr("stroke", "black")
+		  .style("width", 40)
+
+	  // rectangle for the main box
+	  var boxWidth = 100
+	  svg
+		.selectAll("boxes")
+		.data(sumstat)
+		.enter()
+		.append("rect")
+			.attr("x", function(d){return(x(d.key)-boxWidth/2)})
+			.attr("y", function(d){return(y(d.value.q3))})
+			.attr("height", function(d){return(y(d.value.q1)-y(d.value.q3))})
+			.attr("width", boxWidth )
+			.attr("stroke", "black")
+			.style("fill", "#69b3a2")
+
+	  // Show the median
+	  svg
+		.selectAll("medianLines")
+		.data(sumstat)
+		.enter()
+		.append("line")
+		  .attr("x1", function(d){return(x(d.key)-boxWidth/2) })
+		  .attr("x2", function(d){return(x(d.key)+boxWidth/2) })
+		  .attr("y1", function(d){return(y(d.value.median))})
+		  .attr("y2", function(d){return(y(d.value.median))})
+		  .attr("stroke", "black")
+		  .style("width", 80)
+
+	// Add individual points with jitter
+	var jitterWidth = 50
+	svg
+	  .selectAll("indPoints")
+	  .data(data)
+	  .enter()
+	  .append("circle")
+		.attr("cx", function(d){return(x(d.name) - jitterWidth/2 + Math.random()*jitterWidth )})
+		.attr("cy", function(d){return(y(d.color))})
+		.attr("r", 4)
+		.style("fill", "white")
+		.attr("stroke", "black")
+
+
+	})
+
+
+}
+
 
 </script>
 
