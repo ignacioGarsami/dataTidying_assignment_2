@@ -4,6 +4,7 @@
 
 <title>Assignment</title>
 <script src="https://d3js.org/d3.v4.js"></script>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 <style>
 
 h1 {
@@ -26,10 +27,12 @@ div.assignment {
 }
 
 div {
-	width: 300px;
+	width: 600px;
 	display: block;
 	margin: auto;
 }
+
+
 
 table {
   width: 200px;
@@ -107,6 +110,10 @@ td {
 
 <div id='multibox'></div>
 
+<h3>Plotly error-bar plot</h3>
+
+<div id="errorbox"></div>
+
 <script>
 <!-- 
 d3.csv("data/data1.csv", function(data){
@@ -121,6 +128,8 @@ load_table('data/data1.csv')
 barchart('x')
 
 multiboxplot()
+
+errorplot()
 
 
 function boxplot(data) {
@@ -418,6 +427,7 @@ function multiboxplot(){
 }
 
 function fillArray(value, len) {
+
   if (len == 0) return [];
   var a = [value];
   while (a.length * 2 <= len) a = a.concat(a);
@@ -425,6 +435,38 @@ function fillArray(value, len) {
   return a;
 }
 
+function errorplot(){
+    
+	var trace1 = {
+	  x: ['Green', 'Blue', 'Red'],
+	  y: [5, 3, 2],
+	  name: 'Group 1',
+	  error_y: {
+		type: 'data',
+		array: [1, 0.75, 0.25],
+		visible: true
+	  },
+	  type: 'bar'
+	};
+	
+	var trace2 = {
+	  x: ['Green', 'Blue', 'Red'],
+	  y: [6, 5, 3],
+	  name: 'Group 2',
+	  error_y: {
+		type: 'data',
+		array: [0.33, 1.25, 0.25],
+		visible: true
+	  },
+	  type: 'bar'
+	};
+
+	var data = [trace1, trace2];
+	var layout = {barmode: 'group'};
+	Plotly.newPlot('errorbox', data, layout);
+
+}
+    
 
 </script>
 
